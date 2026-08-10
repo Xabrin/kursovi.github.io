@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Калькулятор процентов</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Простой калькулятор процентов: процент от числа, доля в процентах, прибавить или вычесть процент, изменение в процентах. Работает офлайн.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#f2f4f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Проценты">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <span class="topbar__mark">%</span>
+    <h1 class="topbar__title">Калькулятор процентов</h1>
+  </header>
+
+  <nav class="modes" id="modes" role="tablist" aria-label="Режим расчёта"></nav>
+
+  <main class="sheet">
+    <p class="prompt" id="prompt"></p>
+
+    <div class="fields" id="fields"></div>
+
+    <div class="segmented" id="signRow" hidden role="group" aria-label="Направление">
+      <button type="button" class="segmented__btn is-active" data-sign="1">Прибавить</button>
+      <button type="button" class="segmented__btn" data-sign="-1">Вычесть</button>
+    </div>
+  </main>
+
+  <button type="button" class="result" id="result" aria-live="polite">
+    <span class="result__row">
+      <span class="result__value" id="resultValue">—</span>
+      <span class="result__unit" id="resultUnit"></span>
+    </span>
+    <span class="result__note" id="resultNote">Введите числа</span>
+    <span class="result__hint" id="resultHint">нажмите, чтобы скопировать</span>
+  </button>
+
+  <div class="keypad" id="keypad">
+    <button type="button" class="key" data-key="7">7</button>
+    <button type="button" class="key" data-key="8">8</button>
+    <button type="button" class="key" data-key="9">9</button>
+    <button type="button" class="key key--fn" data-key="back" aria-label="Стереть">⌫</button>
+
+    <button type="button" class="key" data-key="4">4</button>
+    <button type="button" class="key" data-key="5">5</button>
+    <button type="button" class="key" data-key="6">6</button>
+    <button type="button" class="key key--fn" data-key="clear" aria-label="Очистить">C</button>
+
+    <button type="button" class="key" data-key="1">1</button>
+    <button type="button" class="key" data-key="2">2</button>
+    <button type="button" class="key" data-key="3">3</button>
+    <button type="button" class="key key--fn" data-key="swap" aria-label="Поменять числа местами">⇄</button>
+
+    <button type="button" class="key key--fn" data-key="neg" aria-label="Сменить знак">±</button>
+    <button type="button" class="key" data-key="0">0</button>
+    <button type="button" class="key" data-key="dot" aria-label="Запятая">,</button>
+    <button type="button" class="key key--accent" data-key="next" aria-label="Следующее поле">→</button>
+  </div>
+
+</div>
+
+<script src="./app.js" defer></script>
+</body>
+</html>
