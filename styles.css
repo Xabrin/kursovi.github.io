@@ -1,0 +1,406 @@
+/* ---------- Тема ---------- */
+
+:root {
+  --bg: #f2f4f9;
+  --surface: #ffffff;
+  --surface-2: #e9edf6;
+  --line: #dde3ef;
+  --text: #101522;
+  --muted: #69718a;
+  --accent: #5b4bdb;
+  --accent-ink: #ffffff;
+  --accent-soft: #ebe8ff;
+  --key: #ffffff;
+  --key-fn: #e4e9f3;
+  --up: #0a7d46;
+  --down: #c23a34;
+  --shadow: 0 1px 2px rgba(16, 21, 34, .06), 0 10px 26px rgba(16, 21, 34, .07);
+  --radius: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1116;
+    --surface: #171b23;
+    --surface-2: #1e2430;
+    --line: #2a3140;
+    --text: #e9edf6;
+    --muted: #8b94a9;
+    --accent: #8b7bff;
+    --accent-ink: #12101f;
+    --accent-soft: #241f47;
+    --key: #1c2230;
+    --key-fn: #151a24;
+    --up: #4ade80;
+    --down: #ff6b63;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 12px 30px rgba(0, 0, 0, .35);
+  }
+}
+
+/* ---------- Каркас ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* hidden должен побеждать display из классов ниже */
+[hidden] { display: none !important; }
+
+html { height: 100%; }
+
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.35;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100dvh;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 10px) calc(env(safe-area-inset-right) + 12px)
+           calc(env(safe-area-inset-bottom) + 10px) calc(env(safe-area-inset-left) + 12px);
+}
+
+/* ---------- Шапка ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: none;
+  padding: 0 2px;
+}
+
+.topbar__mark {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.topbar__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .1px;
+}
+
+/* ---------- Режимы ---------- */
+
+.modes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  flex: none;
+}
+
+.mode {
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  line-height: 1.25;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.mode[aria-selected="true"] {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.mode:active { transform: scale(.985); }
+
+/* ---------- Рабочая область ---------- */
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.prompt {
+  flex: none;
+  margin: 2px 4px 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.prompt b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- Поля ввода ---------- */
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: none;
+}
+
+.field {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  text-align: left;
+  transition: border-color .15s, background .15s;
+}
+
+.field.is-active {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.field__label {
+  flex: none;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field.is-active .field__label { color: var(--accent); }
+
+.field__value {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: right;
+  font-size: 26px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.2px;
+  white-space: nowrap;
+}
+
+.field__value[data-len="long"] { font-size: 21px; }
+.field__value[data-len="xlong"] { font-size: 17px; }
+
+.field__value.is-empty { color: var(--muted); opacity: .55; }
+
+.field.is-active .field__value::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 22px;
+  margin-left: 2px;
+  vertical-align: -3px;
+  background: var(--accent);
+  animation: caret 1.05s steps(1, end) infinite;
+}
+
+@keyframes caret { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .field.is-active .field__value::after { animation: none; }
+}
+
+.field__unit {
+  flex: none;
+  width: 14px;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* ---------- Переключатель + / − ---------- */
+
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  flex: none;
+  padding: 4px;
+  border-radius: 13px;
+  background: var(--surface-2);
+}
+
+.segmented__btn {
+  padding: 8px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+
+.segmented__btn.is-active {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+}
+
+/* ---------- Результат ---------- */
+
+/* Результат живёт вне прокручиваемой области: он виден всегда,
+   даже если поля на низком экране пришлось прокрутить. */
+.result {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  flex: none;
+  width: 100%;
+  padding: 14px 16px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.result__row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  max-width: 100%;
+}
+
+.result__value {
+  color: var(--accent);
+  font-size: clamp(30px, 9vw, 40px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.8px;
+  white-space: nowrap;
+}
+
+.result__value[data-len="long"] { font-size: clamp(23px, 6.6vw, 30px); }
+.result__value[data-len="xlong"] { font-size: clamp(18px, 5vw, 23px); }
+
+.result__value.is-up { color: var(--up); }
+.result__value.is-down { color: var(--down); }
+.result__value.is-empty { color: var(--muted); }
+
+.result__unit {
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.result__value.is-up ~ .result__unit { color: var(--up); }
+.result__value.is-down ~ .result__unit { color: var(--down); }
+.result__value.is-empty ~ .result__unit { color: var(--muted); }
+
+.result__note {
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.result__hint {
+  color: var(--muted);
+  font-size: 11px;
+  opacity: .8;
+}
+
+.result.is-copied .result__hint { color: var(--accent); opacity: 1; }
+
+/* ---------- Клавиатура ---------- */
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  flex: none;
+}
+
+.key {
+  display: grid;
+  place-items: center;
+  height: clamp(42px, 8.2vh, 60px);
+  border-radius: 14px;
+  background: var(--key);
+  border: 1px solid var(--line);
+  font-size: 21px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  transition: transform .07s, filter .12s;
+}
+
+.key--fn {
+  background: var(--key-fn);
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.key--accent {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.key:active {
+  transform: scale(.94);
+  filter: brightness(.93);
+}
+
+@media (prefers-color-scheme: dark) {
+  .key:active { filter: brightness(1.35); }
+}
+
+/* Низкие экраны: ужимаем всё, кроме клавиш */
+@media (max-height: 660px) {
+  .app { gap: 7px; }
+  .topbar { display: none; }
+  .mode { padding: 7px 9px; font-size: 12px; }
+  .prompt { margin-top: 0; font-size: 12.5px; }
+  .field { padding: 8px 13px; }
+  .field__value { font-size: 22px; }
+  .field.is-active .field__value::after { height: 19px; }
+  .segmented { padding: 3px; }
+  .segmented__btn { padding: 6px; font-size: 12.5px; }
+  .result { padding: 10px 14px 9px; }
+  .result__note { font-size: 12px; }
+}
+
+/* Совсем низкие экраны (iPhone SE и подобные) */
+@media (max-height: 600px) {
+  .app { gap: 6px; }
+  .keypad { gap: 6px; }
+  .key { height: clamp(38px, 7.2vh, 52px); }
+  .result__hint { display: none; }
+}
